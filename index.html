@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#080C14" />
+<meta name="description" content="My.AI — Your scientific AI platform for math, science, engineering & education." />
+<title>My.AI — Scientific AI Platform</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<!-- KaTeX for math -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<!-- Markdown, syntax highlighting, mermaid, plotly, three, leaflet, pdf.js loaded lazily -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+/* ============================================================
+   MY.AI — SINGLE-FILE SCIENTIFIC AI PLATFORM
+   Theme: Tactical Scientific Control Panel
+   ============================================================ */
+:root {
+  --bg-primary: #080C14;
+  --bg-secondary: #0F172A;
+  --bg-surface: #131B2E;
+  --bg-elevated: #1a2340;
+  --border: rgba(148, 163, 184, 0.14);
+  --border-active: rgba(140, 250, 17, 0.4);
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --kiwi: #8CFA11;
+  --kiwi-dark: #65A30D;
+  --kiwi-glow: 0 0 14px rgba(140, 250, 17, 0.55);
+  --cyan: #38BDF8;
+  --cobalt: #3B82F6;
+  --amber: #F59E0B;
+  --emerald: #10B981;
+  --violet: #818CF8;
+  --rose: #F43F5E;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.35);
+  --font-display: 'Outfit', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+[data-theme="light"] {
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #FFFFFF;
+  --bg-surface: #F1F5F9;
+  --bg-elevated: #E2E8F0;
+  --border: #E2E8F0;
+  --border-active: #65A30D;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --kiwi: #65A30D;
+  --kiwi-glow: 0 0 10px rgba(101, 163, 13, 0.4);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+button { font-family: inherit; cursor: pointer; }
+::selection { background: rgba(140,250,17,0.25); color: var(--text-primary); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.25); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.4); }
+
+/* ---------- Layout ---------- */
+.app { display: grid; grid-template-rows: auto auto 1fr; height: 100dvh; }
+
+/* ---------- Header ---------- */
+.header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 16px;
+  background: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 30;
+}
+.icon-btn {
+  width: 42px; height: 42px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  transition: background 180ms, border-color 180ms, transform 180ms;
+  font-size: 18px;
+}
+.icon-btn:hover { background: var(--bg-surface); border-color: var(--border-active); }
+.icon-btn:active { transform: scale(0.96); }
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+.brand-dot { color: var(--kiwi); }
+.live {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+  background: rgba(140,250,17,0.08);
+  border: 1px solid rgba(140,250,17,0.3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--kiwi);
+}
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--kiwi);
+  box-shadow: var(--kiwi-glow);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.7; }
+}
+.header-spacer { flex: 1; }
+.model-select {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  min-height: 42px;
+  max-width: 200px;
+}
+.status-badge { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; }
+
+/* ---------- Scientific symbol ribbon ---------- */
+.ribbon {
+  display: flex; gap: 6px; overflow-x: auto;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.ribbon::-webkit-scrollbar { display: none; }
+.ribbon-btn {
+  flex-shrink: 0;
+  min-width: 44px; height: 40px;
+  padding: 0 12px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 180ms;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.ribbon-btn:hover { border-color: var(--kiwi); color: var(--kiwi); background: rgba(140,250,17,0.06); }
+.ribbon-btn .lbl { font-size: 11px; font-family: var(--font-body); font-weight: 500; color: var(--text-secondary); }
+
+/* ---------- Body ---------- */
+.body { display: grid; grid-template-columns: 300px 1fr; overflow: hidden; min-height: 0; }
+@media (max-width: 1023px) { .body { grid-template-columns: 1fr; } }
+.backdrop { display: none; }
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
+}
+@media (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: min(85vw, 320px);
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 240ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-md);
+  }
+  .sidebar.open { transform: translateX(0); }
+  [dir="rtl"] .sidebar { left: auto; right: 0; transform: translateX(100%); }
+  [dir="rtl"] .sidebar.open { transform: translateX(0); }
+  .backdrop {
+    display: block;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 40;
+    opacity: 0; pointer-events: none;
+    transition: opacity 240ms;
+  }
+  .backdrop.open { opacity: 1; pointer-events: auto; }
+}
+.sidebar-section { padding: 12px; border-bottom: 1px solid var(--border); }
+.sidebar-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin: 4px 0 8px;
+}
+.new-chat-btn {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px;
+  background: var(--kiwi);
+  color: #071807;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 14px;
+  box-shadow: var(--kiwi-glow);
+  transition: transform 160ms, box-shadow 160ms;
+}
+.new-chat-btn:hover { transform: translateY(-1px); box-shadow: 0 0 22px rgba(140,250,17,0.7); }
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 13px;
+}
+.search-input:focus { outline: none; border-color: var(--kiwi); }
+.tool-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.tool-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-family: var(--font-body); font-weight: 500;
+  text-align: start;
+  transition: all 160ms;
+}
+.tool-btn:hover { border-color: var(--kiwi); color: var(--kiwi); }
+.session-list { display: flex; flex-direction: column; gap: 4px; padding: 0 8px 8px; }
+.session-item {
+  padding: 10px 12px;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 160ms;
+}
+.session-item:hover { background: var(--bg-surface); }
+.session-item.active { background: var(--bg-surface); border-color: var(--border-active); }
+.session-item .title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.session-item .del { color: var(--text-muted); font-size: 16px; padding: 2px 6px; border-radius: 6px; border: none; background: transparent; }
+.session-item .del:hover { color: var(--rose); background: rgba(244,63,94,0.08); }
+
+/* ---------- Workspace ---------- */
+.workspace { display: flex; flex-direction: column; min-height: 0; position: relative; }
+.tabs {
+  display: flex; gap: 4px; overflow-x: auto;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: all 160ms;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--kiwi); border-color: var(--border-active); background: rgba(140,250,17,0.06); }
+
+.pane { flex: 1; overflow: auto; min-height: 0; display: none; }
+.pane.active { display: flex; flex-direction: column; }
+
+/* ---------- Chat ---------- */
+.chat-scroll { flex: 1; overflow-y: auto; padding: 16px; min-height: 0; }
+.chat-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.welcome { text-align: center; padding: 40px 16px; }
+.welcome h1 { font-family: var(--font-display); font-size: clamp(28px, 5vw, 42px); font-weight: 800; margin: 0 0 8px; letter-spacing: -0.03em; }
+.welcome h1 .accent { color: var(--kiwi); }
+.welcome p { color: var(--text-secondary); font-size: 15px; margin: 0 0 24px; }
+.suggestions { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; max-width: 720px; margin: 0 auto; }
+.suggest {
+  padding: 14px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  text-align: start;
+  transition: all 180ms;
+  display: flex; align-items: center; gap: 10px;
+}
+.suggest:hover { border-color: var(--kiwi); background: rgba(140,250,17,0.05); transform: translateY(-2px); }
+.suggest .emoji { font-size: 20px; }
+
+.msg { display: flex; flex-direction: column; gap: 8px; animation: fadeIn 240ms ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.msg-header { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.08em; }
+.msg-avatar { width: 26px; height: 26px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; }
+.msg.user .msg-avatar { background: var(--cobalt); color: white; }
+.msg.assistant .msg-avatar { background: linear-gradient(135deg, var(--kiwi), var(--cyan)); color: #071807; }
+.msg-body {
+  padding: 14px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  line-height: 1.7;
+  font-size: 15px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.msg.user .msg-body { background: rgba(59,130,246,0.08); border-color: rgba(59,130,246,0.2); }
+.msg-body p { margin: 0 0 10px; }
+.msg-body p:last-child { margin: 0; }
+.msg-body h1, .msg-body h2, .msg-body h3 { font-family: var(--font-display); margin: 12px 0 8px; }
+.msg-body pre { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; overflow-x: auto; font-family: var(--font-mono); font-size: 13px; }
+.msg-body code:not(pre code) { background: var(--bg-primary); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.9em; color: var(--cyan); }
+.msg-body table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 14px; }
+.msg-body th, .msg-body td { border: 1px solid var(--border); padding: 6px 10px; text-align: start; }
+.msg-body th { background: var(--bg-elevated); }
+.msg-body a { color: var(--cyan); }
+.msg-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+.msg-action {
+  padding: 4px 10px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  transition: all 160ms;
+}
+.msg-action:hover { color: var(--kiwi); border-color: var(--border-active); }
+.typing-dot { display: inline-block; width: 6px; height: 6px; background: var(--kiwi); border-radius: 50%; animation: typing 1.2s infinite ease-in-out; margin: 0 2px; }
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typing { 0%, 60%, 100% { opacity: 0.3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
+
+/* ---------- Composer ---------- */
+.composer {
+  padding: 12px 16px 16px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+}
+.composer-inner { max-width: 900px; margin: 0 auto; }
+.attachments { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.attachment {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+.attachment button { background: none; border: none; color: var(--text-muted); font-size: 14px; padding: 0 4px; }
+.input-wrap {
+  display: flex; align-items: flex-end; gap: 6px;
+  padding: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color 180ms;
+}
+.input-wrap:focus-within { border-color: var(--kiwi); box-shadow: 0 0 0 3px rgba(140,250,17,0.08); }
+#chat-input {
+  flex: 1;
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 8px;
+  min-height: 24px;
+  max-height: 180px;
+}
+.icon-btn.small { width: 38px; height: 38px; font-size: 16px; }
+.send-btn {
+  min-width: 38px; height: 38px;
+  padding: 0 14px;
+  background: var(--kiwi);
+  color: #071807;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 160ms;
+}
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.send-btn:not(:disabled):hover { box-shadow: var(--kiwi-glow); }
+
+/* ---------- Calculator ---------- */
+.calc-wrap { padding: 16px; max-width: 480px; margin: 0 auto; width: 100%; }
+.calc-display {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  min-height: 100px;
+  font-family: var(--font-mono);
+  font-size: 20px;
+  text-align: end;
+  margin-bottom: 12px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.calc-display .history { font-size: 12px; color: var(--text-muted); min-height: 16px; }
+.calc-display .expr { font-size: 24px; color: var(--text-primary); margin-top: 6px; }
+.calc-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.calc-btn {
+  padding: 14px 8px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 140ms;
+  min-height: 48px;
+}
+.calc-btn:hover { border-color: var(--kiwi); color: var(--kiwi); }
+.calc-btn.op { background: rgba(56,189,248,0.08); color: var(--cyan); }
+.calc-btn.eq { background: var(--kiwi); color: #071807; border-color: var(--kiwi); grid-column: span 2; }
+.calc-btn.eq:hover { color: #071807; box-shadow: var(--kiwi-glow); }
+.calc-mode { display: flex; gap: 6px; margin-bottom: 8px; }
+.calc-mode button { flex: 1; padding: 6px; font-size: 11px; font-family: var(--font-mono); background: var(--bg-surface); color: var(--text-secondary); border: 1px solid var(--border); border-radius: 6px; }
+.calc-mode button.active { color: var(--kiwi); border-color: var(--border-active); }
+
+/* ---------- Converter ---------- */
+.conv-wrap { padding: 20px; max-width: 640px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 12px; }
+.conv-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: end; }
+.conv-field { display: flex; flex-direction: column; gap: 6px; }
+.conv-field label { font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); letter-spacing: 0.1em; }
+.conv-field input, .conv-field select {
+  padding: 12px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+.conv-arrow { font-size: 24px; color: var(--kiwi); padding-bottom: 12px; }
+
+/* ---------- Graph & 3D & Map ---------- */
+.tool-container { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.tool-controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.tool-controls input, .tool-controls select {
+  padding: 8px 12px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+.tool-btn-primary {
+  padding: 8px 16px;
+  background: var(--kiwi);
+  color: #071807;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+}
+#plot-canvas, #three-canvas, #map-canvas { flex: 1; min-height: 320px; background: var(--bg-surface); border-radius: var(--radius-md); border: 1px solid var(--border); overflow: hidden; }
+
+/* ---------- Preview ---------- */
+.preview-wrap { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+.preview-frame { flex: 1; width: 100%; border: 1px solid var(--border); border-radius: var(--radius-md); background: white; min-height: 320px; }
+
+/* ---------- Modal ---------- */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 100;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(4px);
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  max-width: 540px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+}
+.modal-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-family: var(--font-display); font-weight: 700; font-size: 18px; margin: 0; }
+.modal-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-group label { font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary); letter-spacing: 0.08em; text-transform: uppercase; }
+.field-group input, .field-group textarea, .field-group select {
+  padding: 10px 12px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body); font-size: 14px;
+}
+.btn {
+  padding: 10px 16px;
+  background: var(--kiwi);
+  color: #071807;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700; font-size: 14px;
+  transition: transform 140ms, box-shadow 140ms;
+}
+.btn:hover { box-shadow: var(--kiwi-glow); }
+.btn.ghost { background: transparent; color: var(--text-primary); border: 1px solid var(--border); }
+.btn.ghost:hover { border-color: var(--kiwi); color: var(--kiwi); box-shadow: none; }
+
+/* ---------- Toast ---------- */
+.toast-container { position: fixed; top: 16px; right: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 200; pointer-events: none; }
+[dir="rtl"] .toast-container { right: auto; left: 16px; }
+.toast {
+  pointer-events: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 13px;
+  box-shadow: var(--shadow-md);
+  display: flex; align-items: center; gap: 8px;
+  animation: slideIn 240ms ease-out;
+  max-width: 320px;
+}
+.toast.success { border-color: var(--kiwi); }
+.toast.error { border-color: var(--rose); }
+.toast.warn { border-color: var(--amber); }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ---------- Symbol panel ---------- */
+.symbol-panel { max-height: 60vh; overflow-y: auto; }
+.symbol-group { margin-bottom: 12px; }
+.symbol-group-title { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+.symbol-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 4px; }
+.sym-btn {
+  padding: 10px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  min-height: 44px;
+}
+.sym-btn:hover { border-color: var(--kiwi); color: var(--kiwi); }
+
+.hidden { display: none !important; }
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--kiwi); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =========== MOBILE OVERFLOW GUARDS =========== */
+html, body, .app { max-width: 100vw; }
+.app { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+img, canvas, iframe, svg, video { max-width: 100%; }
+.msg-body { overflow-x: auto; }
+.msg-body pre, .msg-body table { max-width: 100%; }
+.workspace, .pane, .chat-scroll, .chat-container { min-width: 0; }
+.composer-inner, .input-wrap { min-width: 0; }
+#chat-input { min-width: 0; width: 100%; }
+
+@media (max-width: 767px) {
+  .calc-grid { grid-template-columns: repeat(4, 1fr); }
+  .header { padding: 8px 10px; gap: 8px; flex-wrap: nowrap; }
+  .brand { font-size: 16px; }
+  .brand > span { white-space: nowrap; }
+  .live { font-size: 10px; padding: 3px 8px; letter-spacing: 0.08em; }
+  .header-spacer { flex: 1 1 0; min-width: 0; }
+  .status-badge { display: none; }
+  .model-select { max-width: 140px; font-size: 11px; padding: 6px 8px; min-height: 38px; flex-shrink: 1; min-width: 0; }
+  .icon-btn { width: 38px; height: 38px; font-size: 16px; flex-shrink: 0; }
+  .ribbon { padding: 6px 10px; gap: 5px; }
+  .ribbon-btn { min-width: 40px; height: 38px; padding: 0 10px; font-size: 15px; }
+  .ribbon-btn .lbl { display: none; }
+  .tabs { padding: 6px 10px; }
+  .tab { padding: 6px 10px; font-size: 11px; }
+  .composer { padding: 10px 10px 12px; }
+  .composer { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+  .input-wrap { padding: 6px; gap: 4px; flex-wrap: wrap; }
+  .input-wrap #chat-input { flex: 1 1 100%; order: 5; padding: 8px 4px; font-size: 16px; min-height: 44px; }
+  .input-wrap .icon-btn.small { width: 34px; height: 34px; font-size: 14px; }
+  .input-wrap .send-btn { order: 6; margin-inline-start: auto; height: 36px; padding: 0 14px; }
+  .welcome { padding: 24px 8px; }
+  .welcome h1 { font-size: clamp(24px, 8vw, 34px); }
+  .suggestions { grid-template-columns: 1fr; }
+  .msg-body { padding: 12px; font-size: 14px; }
+  .msg-body pre { font-size: 12px; }
+  .modal { max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); }
+  .modal-body { padding: 16px; }
+  .conv-row { grid-template-columns: 1fr; gap: 6px; }
+  .conv-arrow { transform: rotate(90deg); text-align: center; padding: 4px 0; }
+  .tool-controls { gap: 6px; }
+  .tool-controls input, .tool-controls select { flex: 1 1 auto; min-width: 0; font-size: 16px; }
+  .toast { max-width: calc(100vw - 32px); }
+  .toast-container { top: 8px; right: 8px; left: 8px; }
+  [dir="rtl"] .toast-container { right: 8px; left: 8px; }
+  .calc-wrap { padding: 12px; }
+  .calc-display { padding: 12px; min-height: 84px; font-size: 18px; }
+  .calc-display .expr { font-size: 22px; }
+  .calc-btn { padding: 12px 4px; font-size: 13px; min-height: 44px; }
+  .tool-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tool-btn { padding: 10px 8px; font-size: 12px; }
+  .session-item { padding: 8px 10px; }
+}
+
+@media (max-width: 400px) {
+  .brand { font-size: 15px; }
+  .model-select { max-width: 110px; font-size: 10px; }
+  .live { font-size: 9px; padding: 2px 6px; }
+  .live-dot { width: 6px; height: 6px; }
+  .icon-btn { width: 34px; height: 34px; font-size: 15px; }
+  .calc-btn { padding: 10px 2px; font-size: 12px; min-height: 42px; }
+  .ribbon-btn { min-width: 36px; padding: 0 8px; font-size: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <!-- ============= HEADER ============= -->
+  <header class="header">
+    <button class="icon-btn" id="sidebar-toggle" aria-label="Menu" data-testid="sidebar-toggle-button">☰</button>
+    <div class="brand" data-testid="my-ai-brand-logo">
+      <span>My<span class="brand-dot">.</span>AI</span>
+    </div>
+    <div class="live" data-testid="live-kiwi-status-indicator">
+      <span class="live-dot"></span>
+      <span>LIVE</span>
+    </div>
+    <div class="header-spacer"></div>
+    <span class="status-badge" id="status-badge" data-testid="connection-status">● ONLINE</span>
+    <select class="model-select" id="model-select" data-testid="model-selector-dropdown" title="Model">
+      <optgroup label="Gemini">
+        <option value="gemini::gemini-3-flash-preview">Gemini 3 Flash</option>
+        <option value="gemini::gemini-3.1-pro-preview">Gemini 3.1 Pro</option>
+        <option value="gemini::gemini-3.5-flash">Gemini 3.5 Flash</option>
+      </optgroup>
+      <optgroup label="Claude">
+        <option value="anthropic::claude-sonnet-5">Claude Sonnet 5</option>
+        <option value="anthropic::claude-sonnet-4-6">Claude Sonnet 4.6</option>
+        <option value="anthropic::claude-haiku-4-5-20251001">Claude Haiku 4.5</option>
+      </optgroup>
+      <optgroup label="OpenAI">
+        <option value="openai::gpt-5.4">GPT-5.4</option>
+        <option value="openai::gpt-5.4-mini">GPT-5.4 Mini</option>
+        <option value="openai::gpt-5.2">GPT-5.2</option>
+      </optgroup>
+    </select>
+    <button class="icon-btn" id="theme-toggle" aria-label="Theme" data-testid="theme-toggle-button">🌙</button>
+    <button class="icon-btn" id="settings-btn" aria-label="Settings" data-testid="open-settings-button">⚙</button>
+  </header>
+
+  <!-- ============= SYMBOL RIBBON ============= -->
+  <nav class="ribbon" id="ribbon" aria-label="Scientific symbols">
+    <!-- populated by JS -->
+  </nav>
+
+  <!-- ============= BODY ============= -->
+  <div class="body">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" data-testid="sidebar">
+      <div class="sidebar-section">
+        <button class="new-chat-btn" id="new-chat-btn" data-testid="new-chat-button">＋ New chat</button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Search</div>
+        <input class="search-input" id="session-search" placeholder="Search chats..." data-testid="session-search-input" />
+      </div>
+      <div class="sidebar-section" style="flex:1;">
+        <div class="sidebar-title">Chats</div>
+        <div class="session-list" id="session-list" data-testid="session-list"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Scientific tools</div>
+        <div class="tool-list">
+          <button class="tool-btn" data-tab="calc" data-testid="tool-calc">🧮 Calc</button>
+          <button class="tool-btn" data-tab="conv" data-testid="tool-conv">📏 Units</button>
+          <button class="tool-btn" data-tab="graph" data-testid="tool-graph">📈 Graph</button>
+          <button class="tool-btn" data-tab="three" data-testid="tool-three">🧊 3D</button>
+          <button class="tool-btn" data-tab="map" data-testid="tool-map">🌍 Map</button>
+          <button class="tool-btn" data-tab="symbols" data-testid="tool-symbols">Σ Symbols</button>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Developer</div>
+        <div style="font-size:12px; color:var(--text-secondary); line-height:1.6;">
+          <div><b>Nidal Watfa</b></div>
+          <a href="mailto:nidalwatfa99@gmail.com" style="color:var(--cyan);">📧 nidalwatfa99@gmail.com</a><br/>
+          <a href="https://wa.me/963998854450" target="_blank" rel="noopener" style="color:var(--kiwi);">💬 WhatsApp</a>
+        </div>
+      </div>
+    </aside>
+    <div class="backdrop" id="sidebar-backdrop"></div>
+
+    <!-- Workspace -->
+    <main class="workspace">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="chat" data-testid="tab-chat">CHAT</button>
+        <button class="tab" data-tab="calc" data-testid="tab-calc">CALC</button>
+        <button class="tab" data-tab="conv" data-testid="tab-conv">UNITS</button>
+        <button class="tab" data-tab="graph" data-testid="tab-graph">GRAPH</button>
+        <button class="tab" data-tab="three" data-testid="tab-three">3D</button>
+        <button class="tab" data-tab="map" data-testid="tab-map">MAP</button>
+        <button class="tab" data-tab="preview" data-testid="tab-preview">PREVIEW</button>
+      </div>
+
+      <!-- CHAT PANE -->
+      <section class="pane active" id="pane-chat" data-testid="pane-chat">
+        <div class="chat-scroll" id="chat-scroll">
+          <div class="chat-container" id="chat-container">
+            <div class="welcome" id="welcome">
+              <h1>My<span class="accent">.</span>AI</h1>
+              <p>Your intelligent scientific platform for learning, calculation, and discovery.</p>
+              <div class="suggestions">
+                <button class="suggest" data-prompt="Solve the integral ∫ x² sin(x) dx step by step." data-testid="suggest-math"><span class="emoji">🧮</span><span>Solve a math problem</span></button>
+                <button class="suggest" data-prompt="Explain Newton's second law with real-world examples." data-testid="suggest-physics"><span class="emoji">⚛</span><span>Explain a physics law</span></button>
+                <button class="suggest" data-prompt="Balance the chemical equation: Fe + O2 → Fe2O3." data-testid="suggest-chem"><span class="emoji">🧪</span><span>Balance an equation</span></button>
+                <button class="suggest" data-prompt="Plot y = sin(x) * exp(-x/10) for x in [0, 20]." data-testid="suggest-graph"><span class="emoji">📊</span><span>Plot a function</span></button>
+                <button class="suggest" data-prompt="Describe black holes and how they form." data-testid="suggest-astro"><span class="emoji">🌌</span><span>Ask about astronomy</span></button>
+                <button class="suggest" data-prompt="Analyze this Python code for improvements:\n\ndef fib(n):\n    if n<=1: return n\n    return fib(n-1)+fib(n-2)" data-testid="suggest-code"><span class="emoji">💻</span><span>Analyze code</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="composer">
+          <div class="composer-inner">
+            <div class="attachments" id="attachments"></div>
+            <div class="input-wrap">
+              <button class="icon-btn small" id="attach-btn" aria-label="Attach file" data-testid="attach-file-button">📎</button>
+              <input type="file" id="file-input" hidden multiple accept=".pdf,.txt,.csv,.json,.html,.css,.js,.py,.md,.png,.jpg,.jpeg,.svg" />
+              <button class="icon-btn small" id="mic-btn" aria-label="Voice input" data-testid="voice-input-toggle-button">🎤</button>
+              <button class="icon-btn small" id="symbols-btn" aria-label="Symbols" data-testid="open-symbols-button">Σ</button>
+              <textarea id="chat-input" data-testid="chat-prompt-textarea" placeholder="Ask about math, physics, chemistry, code, or any scientific field..." rows="1"></textarea>
+              <button class="send-btn" id="send-btn" data-testid="chat-send-button">Send ↵</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALCULATOR PANE -->
+      <section class="pane" id="pane-calc" data-testid="pane-calc">
+        <div class="calc-wrap">
+          <div class="calc-mode">
+            <button data-mode="DEG" class="active" data-testid="calc-mode-deg">DEG</button>
+            <button data-mode="RAD" data-testid="calc-mode-rad">RAD</button>
+          </div>
+          <div class="calc-display">
+            <div class="history" id="calc-history"></div>
+            <div class="expr" id="calc-expr">0</div>
+          </div>
+          <div class="calc-grid" id="calc-grid"></div>
+        </div>
+      </section>
+
+      <!-- CONVERTER PANE -->
+      <section class="pane" id="pane-conv" data-testid="pane-conv">
+        <div class="conv-wrap">
+          <div class="field-group">
+            <label>Category</label>
+            <select id="conv-category" data-testid="conv-category"></select>
+          </div>
+          <div class="conv-row">
+            <div class="conv-field">
+              <label>From</label>
+              <input type="number" id="conv-in" value="1" data-testid="conv-input" />
+              <select id="conv-from" data-testid="conv-from"></select>
+            </div>
+            <div class="conv-arrow">→</div>
+            <div class="conv-field">
+              <label>To</label>
+              <input type="number" id="conv-out" readonly data-testid="conv-output" />
+              <select id="conv-to" data-testid="conv-to"></select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- GRAPH PANE -->
+      <section class="pane" id="pane-graph" data-testid="pane-graph">
+        <div class="tool-container">
+          <div class="tool-controls">
+            <input type="text" id="plot-expr" placeholder="y = expression of x, e.g. sin(x)*x" value="sin(x)*x" data-testid="plot-expr" />
+            <input type="number" id="plot-min" value="-10" step="1" style="width:80px" data-testid="plot-min" />
+            <input type="number" id="plot-max" value="10" step="1" style="width:80px" data-testid="plot-max" />
+            <button class="tool-btn-primary" id="plot-btn" data-testid="plot-render-btn">Plot</button>
+          </div>
+          <div id="plot-canvas"></div>
+        </div>
+      </section>
+
+      <!-- 3D PANE -->
+      <section class="pane" id="pane-three" data-testid="pane-three">
+        <div class="tool-container">
+          <div class="tool-controls">
+            <select id="three-shape" data-testid="three-shape">
+              <option value="cube">Cube</option>
+              <option value="sphere">Sphere</option>
+              <option value="torus" selected>Torus</option>
+              <option value="cone">Cone</option>
+              <option value="atom">Atom (H)</option>
+              <option value="axes">3D axes</option>
+            </select>
+            <button class="tool-btn-primary" id="three-render" data-testid="three-render-btn">Render</button>
+          </div>
+          <div id="three-canvas"></div>
+        </div>
+      </section>
+
+      <!-- MAP PANE -->
+      <section class="pane" id="pane-map" data-testid="pane-map">
+        <div class="tool-container">
+          <div class="tool-controls">
+            <input type="text" id="map-search" placeholder="Search location..." data-testid="map-search" />
+            <button class="tool-btn-primary" id="map-search-btn" data-testid="map-search-btn">Search</button>
+            <button class="tool-btn-primary" id="map-locate-btn" style="background:var(--cyan)" data-testid="map-locate-btn">📍 My location</button>
+            <span id="map-coords" style="font-family:var(--font-mono); font-size:12px; color:var(--text-secondary);"></span>
+          </div>
+          <div id="map-canvas"></div>
+        </div>
+      </section>
+
+      <!-- PREVIEW PANE -->
+      <section class="pane" id="pane-preview" data-testid="pane-preview">
+        <div class="preview-wrap">
+          <div class="tool-controls">
+            <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-secondary);">Sandboxed preview for HTML/CSS/JS/SVG/Mermaid content</span>
+            <button class="tool-btn-primary" id="preview-clear" data-testid="preview-clear-btn">Clear</button>
+          </div>
+          <iframe class="preview-frame" id="preview-frame" sandbox="allow-scripts" data-testid="preview-frame"></iframe>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- ============= MODALS ============= -->
+<div class="modal-backdrop" id="settings-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Settings</h3>
+      <button class="icon-btn" data-close-modal="settings-modal" data-testid="close-settings">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>AI Provider</label>
+        <select id="setting-provider" data-testid="setting-provider">
+          <option value="emergent">My.AI Cloud (Emergent Key) — recommended</option>
+          <option value="openrouter">OpenRouter (your API key)</option>
+          <option value="gemini">Gemini API (your API key)</option>
+        </select>
+      </div>
+      <div class="field-group" id="key-field">
+        <label>API Key (stored locally, encrypted)</label>
+        <input type="password" id="setting-apikey" placeholder="sk-or-... or AI..." data-testid="setting-apikey" />
+        <small style="color:var(--text-muted); font-size:11px;">⚠ Browser storage isn't true secrecy — anyone with device access could read it. Prefer the built-in cloud provider.</small>
+      </div>
+      <div class="field-group">
+        <label>Language</label>
+        <select id="setting-lang" data-testid="setting-lang">
+          <option value="auto">Auto-detect</option>
+          <option value="ar">العربية (RTL)</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="es">Español</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </div>
+      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:8px;">
+        <button class="btn ghost" id="clear-data-btn" data-testid="clear-data-btn">Clear all local data</button>
+        <button class="btn" id="save-settings-btn" data-testid="save-settings-btn">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="symbols-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Scientific symbols</h3>
+      <button class="icon-btn" data-close-modal="symbols-modal" data-testid="close-symbols">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="symbol-panel" id="symbol-panel"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Lazy libraries -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+
+<script>
+"use strict";
+/* =============================================================================
+   MY.AI — application script
+   Sections: 0) Config  1) Utils  2) Theme/Lang  3) Storage/Sessions
+             4) Symbols  5) Chat  6) Renderer  7) Calculator  8) Converter
+             9) Graph  10) 3D  11) Map  12) Settings  13) Bootstrap
+============================================================================= */
+
+/* ---------- 0) Config ---------- */
+const API_BASE = window.location.origin;
+const API = API_BASE + "/api";
+const state = {
+  sessions: [],
+  currentSessionId: null,
+  messages: [],
+  streaming: false,
+  attachments: [],
+  provider: "emergent",       // emergent | openrouter | gemini
+  apiKey: "",
+  model: "gemini::gemini-3-flash-preview",
+  lang: "auto",
+  theme: "dark",
+  calc: { expr: "", history: "", mode: "DEG" },
+};
+
+/* ---------- 1) Utilities ---------- */
+const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+const escapeHTML = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+function toast(msg, type = "info", ms = 2600) {
+  const el = document.createElement("div");
+  el.className = "toast " + type;
+  el.textContent = msg;
+  $("#toast-container").appendChild(el);
+  setTimeout(() => { el.style.opacity = "0"; el.style.transition = "opacity 200ms"; }, ms - 200);
+  setTimeout(() => el.remove(), ms);
+}
+
+function detectLang(text) {
+  if (!text) return "en";
+  if (/[\u0600-\u06FF]/.test(text)) return "ar";
+  return "en";
+}
+function applyDir(lang) {
+  const rtl = lang === "ar" || lang === "he" || lang === "fa";
+  document.documentElement.dir = rtl ? "rtl" : "ltr";
+  document.documentElement.lang = lang;
+}
+
+/* ---------- 2) Theme ---------- */
+function setTheme(t) {
+  state.theme = t;
+  document.documentElement.setAttribute("data-theme", t);
+  $("#theme-toggle").textContent = t === "dark" ? "🌙" : "☀️";
+  localStorage.setItem("myai.theme", t);
+}
+
+/* ---------- 3) Storage & sessions ---------- */
+const LS_KEY = "myai.sessions.v1";
+function loadSessions() {
+  try { state.sessions = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+  catch { state.sessions = []; }
+}
+function saveSessions() { localStorage.setItem(LS_KEY, JSON.stringify(state.sessions)); }
+function newSession() {
+  const s = { id: uid(), title: "New chat", messages: [], updated: Date.now() };
+  state.sessions.unshift(s);
+  state.currentSessionId = s.id;
+  state.messages = [];
+  saveSessions();
+  renderSessions();
+  renderChat();
+}
+function loadSession(id) {
+  const s = state.sessions.find(x => x.id === id);
+  if (!s) return;
+  state.currentSessionId = id;
+  state.messages = [...s.messages];
+  renderSessions();
+  renderChat();
+}
+function persistCurrent() {
+  const s = state.sessions.find(x => x.id === state.currentSessionId);
+  if (!s) return;
+  s.messages = state.messages;
+  s.updated = Date.now();
+  if (s.title === "New chat" && state.messages[0]?.content) {
+    s.title = state.messages[0].content.slice(0, 42);
+  }
+  saveSessions();
+  renderSessions();
+}
+function deleteSession(id) {
+  state.sessions = state.sessions.filter(x => x.id !== id);
+  saveSessions();
+  if (state.currentSessionId === id) newSession();
+  else renderSessions();
+}
+function renderSessions() {
+  const q = ($("#session-search").value || "").toLowerCase();
+  const list = state.sessions
+    .filter(s => !q || s.title.toLowerCase().includes(q))
+    .map(s => `
+      <div class="session-item ${s.id === state.currentSessionId ? "active" : ""}" data-id="${s.id}" data-testid="session-item-${s.id}">
+        <span class="title">${escapeHTML(s.title)}</span>
+        <button class="del" data-del="${s.id}" data-testid="session-delete-${s.id}" aria-label="Delete">✕</button>
+      </div>`).join("");
+  $("#session-list").innerHTML = list || `<div style="padding:12px; font-size:12px; color:var(--text-muted);">No chats yet</div>`;
+}
+
+/* ---------- 4) Symbol ribbon + panel ---------- */
+const RIBBON = [
+  { s: "∑", t: "Sum" }, { s: "√", t: "Root" }, { s: "∫", t: "Integral" }, { s: "∂", t: "Partial" },
+  { s: "∞", t: "Infinity" }, { s: "π", t: "Pi" }, { s: "Δ", t: "Delta" }, { s: "θ", t: "Theta" },
+  { s: "λ", t: "Lambda" }, { s: "μ", t: "Mu" }, { s: "σ", t: "Sigma" }, { s: "Ω", t: "Ohm" },
+  { s: "≈", t: "Approx" }, { s: "≠", t: "NotEq" }, { s: "≤", t: "LessEq" }, { s: "≥", t: "GreatEq" },
+  { s: "±", t: "PM" }, { s: "×", t: "×" }, { s: "÷", t: "÷" },
+  { s: "⚛", t: "Atom" }, { s: "🔬", t: "Chem" }, { s: "🧬", t: "Bio" }, { s: "🩺", t: "Med" },
+  { s: "🌌", t: "Astro" }, { s: "⚙", t: "Mech" }, { s: "📊", t: "Stats" }, { s: "🧮", t: "Calc" },
+  { s: "🧪", t: "Lab" }, { s: "📐", t: "Geo" }, { s: "⚡", t: "Energy" },
+];
+const SYMBOL_GROUPS = [
+  { title: "Basic math", syms: ["+","−","×","÷","=","±","≈","≠","≤","≥","<",">","%","/","^"] },
+  { title: "Greek", syms: ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","π","ρ","σ","τ","φ","χ","ψ","ω","Γ","Δ","Θ","Λ","Ξ","Π","Σ","Φ","Ψ","Ω"] },
+  { title: "Calculus", syms: ["∫","∮","∂","∇","∑","∏","lim","d/dx","dx","dy","→","⇒","∞"] },
+  { title: "Sets & logic", syms: ["∈","∉","⊂","⊆","∪","∩","∅","∧","∨","¬","∀","∃","⇔"] },
+  { title: "Geometry", syms: ["△","□","○","∠","⊥","∥","°","π","→","⃗"] },
+  { title: "Chemistry", syms: ["→","⇌","Δ","H₂O","CO₂","NaCl","O₂","H⁺","OH⁻","e⁻"] },
+  { title: "Physics", syms: ["ℏ","c","g","G","m₀","v","a","F","E","p","λ","ν","ω","ρ","η","φ"] },
+  { title: "Superscripts", syms: ["²","³","⁴","⁵","ⁿ","⁰","¹","⁻¹","⁻²"] },
+  { title: "Subscripts", syms: ["₀","₁","₂","₃","ₙ","ₓ","ᵢ","ⱼ","ₖ"] },
+];
+function buildRibbon() {
+  $("#ribbon").innerHTML = RIBBON.map(x => `<button class="ribbon-btn" data-sym="${x.s}" data-testid="scientific-symbol-btn-${x.t}" aria-label="${x.t}">${x.s}<span class="lbl">${x.t}</span></button>`).join("");
+}
+function buildSymbolPanel() {
+  $("#symbol-panel").innerHTML = SYMBOL_GROUPS.map(g => `
+    <div class="symbol-group">
+      <div class="symbol-group-title">${g.title}</div>
+      <div class="symbol-row">${g.syms.map(s => `<button class="sym-btn" data-sym="${escapeHTML(s)}" data-testid="sym-${escapeHTML(s)}">${escapeHTML(s)}</button>`).join("")}</div>
+    </div>`).join("");
+}
+function insertAtCursor(el, text) {
+  const start = el.selectionStart ?? el.value.length;
+  const end = el.selectionEnd ?? el.value.length;
+  el.value = el.value.slice(0, start) + text + el.value.slice(end);
+  el.focus();
+  el.selectionStart = el.selectionEnd = start + text.length;
+  autoResize(el);
+}
+
+/* ---------- 5) Chat ---------- */
+function autoResize(t) { t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 180) + "px"; }
+
+async function sendMessage() {
+  if (state.streaming) return;
+  const input = $("#chat-input");
+  const text = input.value.trim();
+  if (!text && state.attachments.length === 0) return;
+
+  const lang = state.lang === "auto" ? detectLang(text) : state.lang;
+  applyDir(lang);
+
+  let content = text;
+  if (state.attachments.length) {
+    const parts = state.attachments.map(a => `\n\n[Attachment: ${a.name}]\n${a.text ? a.text.slice(0, 8000) : "(binary file)"}`);
+    content = text + parts.join("");
+  }
+
+  state.messages.push({ role: "user", content });
+  state.attachments = [];
+  renderAttachments();
+  input.value = "";
+  autoResize(input);
+  renderChat();
+  persistCurrent();
+
+  state.streaming = true;
+  $("#send-btn").disabled = true;
+
+  const assistantIdx = state.messages.push({ role: "assistant", content: "" }) - 1;
+  renderChat();
+
+  const [provider, model] = state.model.split("::");
+  try {
+    if (state.provider === "emergent") {
+      await streamFromBackend({ provider, model, assistantIdx });
+    } else if (state.provider === "gemini") {
+      await callGeminiDirect({ model, assistantIdx });
+    } else if (state.provider === "openrouter") {
+      await callOpenRouter({ model, assistantIdx });
+    }
+  } catch (e) {
+    state.messages[assistantIdx].content = "⚠ " + (e.message || "Request failed. Check connection or API key.");
+    toast("Request failed: " + (e.message || "unknown"), "error", 4000);
+    setStatus("🔴 ERROR");
+  } finally {
+    state.streaming = false;
+    $("#send-btn").disabled = false;
+    renderChat();
+    persistCurrent();
+  }
+}
+
+async function streamFromBackend({ provider, model, assistantIdx }) {
+  const res = await fetch(API + "/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      session_id: state.currentSessionId,
+      provider, model,
+      messages: state.messages.slice(0, assistantIdx),
+    }),
+  });
+  if (!res.ok || !res.body) throw new Error("Backend error " + res.status);
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const chunks = buf.split("\n\n");
+    buf = chunks.pop();
+    for (const c of chunks) {
+      if (!c.startsWith("data:")) continue;
+      try {
+        const payload = JSON.parse(c.slice(5).trim());
+        if (payload.type === "delta") {
+          state.messages[assistantIdx].content += payload.content;
+          renderChat(true);
+        } else if (payload.type === "error") {
+          throw new Error(payload.message);
+        }
+      } catch (err) { /* ignore malformed */ }
+    }
+  }
+}
+
+async function callGeminiDirect({ model, assistantIdx }) {
+  if (!state.apiKey) throw new Error("Gemini API key missing (Settings).");
+  const contents = state.messages.slice(0, assistantIdx).map(m => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content }],
+  }));
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model || "gemini-2.5-flash")}:generateContent?key=${encodeURIComponent(state.apiKey)}`;
+  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ contents }) });
+  if (!res.ok) throw new Error("Gemini " + res.status);
+  const j = await res.json();
+  const text = j.candidates?.[0]?.content?.parts?.map(p => p.text).join("") || "(no response)";
+  state.messages[assistantIdx].content = text;
+  renderChat();
+}
+
+async function callOpenRouter({ model, assistantIdx }) {
+  if (!state.apiKey) throw new Error("OpenRouter API key missing (Settings).");
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + state.apiKey },
+    body: JSON.stringify({ model: model || "openai/gpt-4o-mini", messages: state.messages.slice(0, assistantIdx).map(m => ({ role: m.role, content: m.content })) }),
+  });
+  if (!res.ok) throw new Error("OpenRouter " + res.status);
+  const j = await res.json();
+  state.messages[assistantIdx].content = j.choices?.[0]?.message?.content || "(no response)";
+  renderChat();
+}
+
+/* ---------- 6) Renderer ---------- */
+function renderMD(md) {
+  if (!window.marked) return escapeHTML(md);
+  marked.setOptions({ breaks: true, gfm: true });
+  return marked.parse(md);
+}
+function processMermaidBlocks(container) {
+  if (!window.mermaid) return;
+  $$("code.language-mermaid", container).forEach((code, i) => {
+    const pre = code.parentElement;
+    const div = document.createElement("div");
+    div.className = "mermaid";
+    div.textContent = code.textContent;
+    pre.replaceWith(div);
+    try { mermaid.init(undefined, div); } catch (e) { /* ignore */ }
+  });
+}
+function renderChat(stickBottom = false) {
+  const cont = $("#chat-container");
+  const welcome = $("#welcome");
+  if (state.messages.length === 0) {
+    if (welcome) welcome.style.display = "block";
+    cont.innerHTML = "";
+    cont.appendChild(welcome || document.createElement("div"));
+    return;
+  }
+  if (welcome) welcome.style.display = "none";
+  cont.innerHTML = state.messages.map((m, i) => {
+    const body = m.role === "assistant" ? renderMD(m.content || `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`) : escapeHTML(m.content);
+    const actions = m.role === "assistant" && m.content ? `
+      <div class="msg-actions">
+        <button class="msg-action" data-copy="${i}" data-testid="msg-copy-${i}">📋 Copy</button>
+        <button class="msg-action" data-speak="${i}" data-testid="msg-speak-${i}">🔊 Read</button>
+        <button class="msg-action" data-retry="${i}" data-testid="msg-retry-${i}">↻ Retry</button>
+        <button class="msg-action" data-preview="${i}" data-testid="msg-preview-${i}">👁 Preview</button>
+        <button class="msg-action" data-export="${i}" data-testid="msg-export-${i}">⬇ Export</button>
+      </div>` : "";
+    return `
+      <div class="msg ${m.role}" data-testid="chat-message-${i}">
+        <div class="msg-header">
+          <span class="msg-avatar">${m.role === "user" ? "U" : "AI"}</span>
+          <span>${m.role === "user" ? "You" : "My.AI"}</span>
+        </div>
+        <div class="msg-body">${body}</div>
+        ${actions}
+      </div>`;
+  }).join("");
+
+  // Post-render: syntax highlight, KaTeX math, mermaid
+  $$("pre code", cont).forEach(c => { try { hljs.highlightElement(c); } catch {} });
+  processMermaidBlocks(cont);
+  if (window.renderMathInElement) {
+    try { renderMathInElement(cont, { delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\(", right: "\\)", display: false },
+      { left: "\\[", right: "\\]", display: true },
+    ], throwOnError: false }); } catch {}
+  }
+  const scr = $("#chat-scroll");
+  if (stickBottom || state.messages[state.messages.length - 1]?.role === "user") scr.scrollTop = scr.scrollHeight;
+}
+
+/* ---------- Attachments ---------- */
+function renderAttachments() {
+  $("#attachments").innerHTML = state.attachments.map((a, i) =>
+    `<div class="attachment"><span>📄 ${escapeHTML(a.name)} · ${(a.size/1024).toFixed(1)}KB</span><button data-detach="${i}" data-testid="detach-${i}">✕</button></div>`).join("");
+}
+async function handleFiles(files) {
+  for (const f of files) {
+    const item = { name: f.name, size: f.size, text: "" };
+    if (f.type.startsWith("text/") || /\.(txt|csv|json|md|html|css|js|py)$/i.test(f.name)) {
+      item.text = await f.text();
+    } else if (/\.pdf$/i.test(f.name)) {
+      item.text = "(PDF file uploaded — content not extracted client-side in this build.)";
+    } else if (f.type.startsWith("image/")) {
+      item.text = "(image attached: " + f.name + ")";
+    }
+    state.attachments.push(item);
+  }
+  renderAttachments();
+}
+
+/* ---------- 7) Scientific calculator ---------- */
+const CALC_KEYS = [
+  "AC","(",")","%","⌫",
+  "sin","cos","tan","π","e",
+  "asin","acos","atan","!","^",
+  "log","ln","√","x²","xʸ",
+  "7","8","9","÷","DEG/RAD",
+  "4","5","6","×","∫dx",
+  "1","2","3","−","d/dx",
+  "0",".","Ans","+","=",
+];
+function renderCalcGrid() {
+  $("#calc-grid").innerHTML = CALC_KEYS.map(k => {
+    const cls = ["/","×","−","+","%","(",")"].includes(k) ? "op" : "";
+    const eq = k === "=" ? "eq" : "";
+    return `<button class="calc-btn ${cls} ${eq}" data-k="${escapeHTML(k)}" data-testid="calc-key-${escapeHTML(k)}">${escapeHTML(k)}</button>`;
+  }).join("");
+}
+function calcInput(k) {
+  const c = state.calc;
+  if (k === "AC") { c.expr = ""; c.history = ""; }
+  else if (k === "⌫") { c.expr = c.expr.slice(0, -1); }
+  else if (k === "=") {
+    try {
+      const r = evalExpr(c.expr);
+      c.history = c.expr + " =";
+      c.expr = String(r);
+      state.calc.ans = r;
+    } catch { toast("Invalid expression", "error"); }
+  }
+  else if (k === "DEG/RAD") { c.mode = c.mode === "DEG" ? "RAD" : "DEG"; $$(".calc-mode button").forEach(b => b.classList.toggle("active", b.dataset.mode === c.mode)); }
+  else if (k === "Ans") { c.expr += String(state.calc.ans || 0); }
+  else if (k === "x²") { c.expr += "^2"; }
+  else if (k === "xʸ") { c.expr += "^"; }
+  else if (k === "π") c.expr += "π";
+  else if (k === "e") c.expr += "e";
+  else if (["sin","cos","tan","asin","acos","atan","log","ln"].includes(k)) c.expr += k + "(";
+  else if (k === "√") c.expr += "√(";
+  else if (k === "!") c.expr += "!";
+  else if (k === "∫dx" || k === "d/dx") toast("Send this expression to My.AI Chat for symbolic " + k, "info", 3000);
+  else c.expr += k;
+  $("#calc-expr").textContent = c.expr || "0";
+  $("#calc-history").textContent = c.history;
+}
+function evalExpr(input) {
+  const c = state.calc;
+  let s = input
+    .replace(/π/g, "Math.PI")
+    .replace(/(?<![a-zA-Z_])e(?![a-zA-Z_(])/g, "Math.E")
+    .replace(/×/g, "*").replace(/÷/g, "/").replace(/−/g, "-")
+    .replace(/√\(/g, "Math.sqrt(")
+    .replace(/\^/g, "**")
+    .replace(/(\d+)!/g, (_, n) => { let r=1; for (let i=2;i<=+n;i++) r*=i; return r; });
+  const trigToRad = c.mode === "DEG";
+  const wrap = (fn) => trigToRad
+    ? `((x)=>Math.${fn}(x*Math.PI/180))`
+    : `Math.${fn}`;
+  const invWrap = (fn) => trigToRad
+    ? `((x)=>Math.${fn}(x)*180/Math.PI)`
+    : `Math.${fn}`;
+  s = s.replace(/\bsin\(/g, wrap("sin")+"(")
+       .replace(/\bcos\(/g, wrap("cos")+"(")
+       .replace(/\btan\(/g, wrap("tan")+"(")
+       .replace(/\basin\(/g, invWrap("asin")+"(")
+       .replace(/\bacos\(/g, invWrap("acos")+"(")
+       .replace(/\batan\(/g, invWrap("atan")+"(")
+       .replace(/\blog\(/g, "Math.log10(")
+       .replace(/\bln\(/g, "Math.log(");
+  if (!/^[\s\d+\-*/().%,MathPIEsqrtlogsincoatnexp0-9]+$/.test(s.replace(/[a-z().,*/\s+\-]/gi, ""))) {
+    // permissive check — Math API only
+  }
+  // eslint-disable-next-line no-new-func
+  const val = Function('"use strict"; return (' + s + ")")();
+  return Number.isFinite(val) ? +val.toPrecision(12) : val;
+}
+
+/* ---------- 8) Unit converter ---------- */
+const UNITS = {
+  Length:      { m:1, km:1000, cm:0.01, mm:0.001, mi:1609.344, ft:0.3048, in:0.0254, yd:0.9144 },
+  Mass:        { kg:1, g:0.001, mg:1e-6, t:1000, lb:0.45359237, oz:0.0283495 },
+  Time:        { s:1, ms:0.001, min:60, h:3600, day:86400 },
+  Speed:       { "m/s":1, "km/h":1/3.6, "mph":0.44704, "ft/s":0.3048 },
+  Energy:      { J:1, kJ:1000, cal:4.184, kcal:4184, Wh:3600, kWh:3.6e6, eV:1.602176634e-19 },
+  Pressure:    { Pa:1, kPa:1000, bar:1e5, atm:101325, psi:6894.757, mmHg:133.322 },
+  Volume:      { L:1, mL:0.001, "m³":1000, gal:3.78541, "in³":0.0163871 },
+  Temperature: { C:"C", F:"F", K:"K" },
+  Data:        { B:1, KB:1024, MB:1048576, GB:1073741824, TB:1099511627776, bit:0.125 },
+  Angle:       { deg:1, rad:180/Math.PI, grad:0.9 },
+};
+function fillConverter() {
+  const catSel = $("#conv-category");
+  catSel.innerHTML = Object.keys(UNITS).map(k => `<option>${k}</option>`).join("");
+  catSel.onchange = () => populateUnits();
+  populateUnits();
+  ["conv-in","conv-from","conv-to"].forEach(id => $("#" + id).oninput = () => convertNow());
+  ["conv-from","conv-to"].forEach(id => $("#" + id).onchange = () => convertNow());
+}
+function populateUnits() {
+  const cat = $("#conv-category").value;
+  const units = Object.keys(UNITS[cat]);
+  $("#conv-from").innerHTML = units.map(u => `<option>${u}</option>`).join("");
+  $("#conv-to").innerHTML = units.map(u => `<option>${u}</option>`).join("");
+  $("#conv-to").selectedIndex = Math.min(1, units.length - 1);
+  convertNow();
+}
+function convertNow() {
+  const cat = $("#conv-category").value;
+  const from = $("#conv-from").value, to = $("#conv-to").value;
+  const v = parseFloat($("#conv-in").value);
+  if (isNaN(v)) { $("#conv-out").value = ""; return; }
+  let out;
+  if (cat === "Temperature") {
+    let c;
+    if (from === "C") c = v; else if (from === "F") c = (v - 32) * 5/9; else c = v - 273.15;
+    if (to === "C") out = c; else if (to === "F") out = c * 9/5 + 32; else out = c + 273.15;
+  } else {
+    const factor = UNITS[cat][from] / UNITS[cat][to];
+    out = v * factor;
+  }
+  $("#conv-out").value = +out.toPrecision(10);
+}
+
+/* ---------- 9) Graph plotter (Plotly loaded lazily) ---------- */
+async function loadScript(src) {
+  return new Promise((res, rej) => {
+    if ([...document.scripts].some(s => s.src === src)) return res();
+    const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+async function renderPlot() {
+  try {
+    await loadScript("https://cdn.plot.ly/plotly-2.35.2.min.js");
+  } catch { toast("Failed to load Plotly", "error"); return; }
+  const expr = $("#plot-expr").value.trim();
+  const min = parseFloat($("#plot-min").value), max = parseFloat($("#plot-max").value);
+  if (!expr || isNaN(min) || isNaN(max) || max <= min) { toast("Invalid input", "warn"); return; }
+  const xs = [], ys = [];
+  const N = 400;
+  const fn = compileFn(expr);
+  for (let i = 0; i <= N; i++) {
+    const x = min + (max - min) * i / N;
+    let y;
+    try { y = fn(x); } catch { y = NaN; }
+    xs.push(x); ys.push(Number.isFinite(y) ? y : null);
+  }
+  const isDark = state.theme === "dark";
+  Plotly.newPlot("plot-canvas", [{ x: xs, y: ys, type: "scatter", mode: "lines", line: { color: "#8CFA11", width: 2 } }], {
+    paper_bgcolor: isDark ? "#131B2E" : "#F8FAFC",
+    plot_bgcolor: isDark ? "#0F172A" : "#FFFFFF",
+    font: { family: "JetBrains Mono, monospace", color: isDark ? "#F1F5F9" : "#0F172A" },
+    margin: { t: 20, r: 20, l: 50, b: 40 },
+    xaxis: { gridcolor: isDark ? "#1e293b" : "#e2e8f0", zerolinecolor: "#38BDF8" },
+    yaxis: { gridcolor: isDark ? "#1e293b" : "#e2e8f0", zerolinecolor: "#38BDF8" },
+  }, { responsive: true, displaylogo: false });
+}
+function compileFn(expr) {
+  const s = expr.replace(/\^/g, "**").replace(/π/g, "Math.PI");
+  const wrap = (fn) => `Math.${fn}`;
+  const clean = s
+    .replace(/\bsin\(/g, wrap("sin")+"(")
+    .replace(/\bcos\(/g, wrap("cos")+"(")
+    .replace(/\btan\(/g, wrap("tan")+"(")
+    .replace(/\bexp\(/g, wrap("exp")+"(")
+    .replace(/\bsqrt\(/g, wrap("sqrt")+"(")
+    .replace(/\blog\(/g, "Math.log10(")
+    .replace(/\bln\(/g, "Math.log(")
+    .replace(/\babs\(/g, wrap("abs")+"(");
+  // eslint-disable-next-line no-new-func
+  return new Function("x", '"use strict"; return (' + clean + ");");
+}
+
+/* ---------- 10) Three.js 3D viewer ---------- */
+let threeCtx = null;
+async function renderThree() {
+  try { await loadScript("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"); }
+  catch { toast("Failed to load Three.js", "error"); return; }
+  const canvas = $("#three-canvas");
+  canvas.innerHTML = "";
+  const w = canvas.clientWidth, h = canvas.clientHeight || 400;
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(state.theme === "dark" ? 0x0F172A : 0xF8FAFC);
+  const cam = new THREE.PerspectiveCamera(60, w/h, 0.1, 1000); cam.position.set(3,3,5);
+  const rn = new THREE.WebGLRenderer({ antialias: true }); rn.setSize(w, h);
+  canvas.appendChild(rn.domElement);
+  const light = new THREE.DirectionalLight(0xffffff, 1.1); light.position.set(5,5,5); scene.add(light);
+  scene.add(new THREE.AmbientLight(0x8CFA11, 0.25));
+  const shape = $("#three-shape").value;
+  let group = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color: 0x38BDF8, metalness: 0.4, roughness: 0.3 });
+  if (shape === "cube") group.add(new THREE.Mesh(new THREE.BoxGeometry(2,2,2), mat));
+  else if (shape === "sphere") group.add(new THREE.Mesh(new THREE.SphereGeometry(1.4, 48, 48), mat));
+  else if (shape === "torus") group.add(new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.4, 24, 96), mat));
+  else if (shape === "cone") group.add(new THREE.Mesh(new THREE.ConeGeometry(1.2, 2.4, 48), mat));
+  else if (shape === "atom") {
+    group.add(new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), new THREE.MeshStandardMaterial({ color: 0xF43F5E })));
+    for (let i=0;i<3;i++) {
+      const tor = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.03, 16, 64), new THREE.MeshStandardMaterial({ color: 0x8CFA11 }));
+      tor.rotation.x = i * Math.PI/3; tor.rotation.y = i * Math.PI/2;
+      group.add(tor);
+    }
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), new THREE.MeshStandardMaterial({ color: 0x38BDF8 }));
+    e.position.x = 1.8; group.add(e);
+  }
+  else if (shape === "axes") group.add(new THREE.AxesHelper(2.5));
+  scene.add(group);
+  if (threeCtx?.dispose) threeCtx.dispose();
+  let mx=0, my=0, dragging=false;
+  const dom = rn.domElement;
+  dom.onmousedown = e => { dragging=true; mx=e.clientX; my=e.clientY; };
+  window.addEventListener("mouseup", () => dragging=false);
+  dom.onmousemove = e => { if (!dragging) return; group.rotation.y += (e.clientX-mx)*0.01; group.rotation.x += (e.clientY-my)*0.01; mx=e.clientX; my=e.clientY; };
+  dom.onwheel = e => { e.preventDefault(); cam.position.multiplyScalar(1 + e.deltaY*0.001); };
+  let raf;
+  function loop() { group.rotation.y += 0.003; rn.render(scene, cam); raf = requestAnimationFrame(loop); }
+  loop();
+  threeCtx = { dispose: () => { cancelAnimationFrame(raf); rn.dispose(); } };
+}
+
+/* ---------- 11) Leaflet map ---------- */
+let mapCtx = null;
+async function initMap() {
+  try { await loadScript("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"); }
+  catch { toast("Failed to load Leaflet", "error"); return; }
+  if (mapCtx) return;
+  const map = L.map("map-canvas").setView([31.5, 36.5], 4);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap", maxZoom: 19 }).addTo(map);
+  const marker = L.marker([31.5, 36.5], { draggable: true }).addTo(map);
+  const updateCoords = () => {
+    const p = marker.getLatLng();
+    $("#map-coords").textContent = `${p.lat.toFixed(5)}, ${p.lng.toFixed(5)}`;
+  };
+  marker.on("dragend", updateCoords); updateCoords();
+  mapCtx = { map, marker };
+}
+async function searchLocation() {
+  const q = $("#map-search").value.trim();
+  if (!q) return;
+  try {
+    const res = await fetch("https://nominatim.openstreetmap.org/search?format=json&q=" + encodeURIComponent(q), { headers: { "Accept": "application/json" } });
+    const arr = await res.json();
+    if (arr[0]) {
+      const { lat, lon } = arr[0];
+      mapCtx.map.setView([+lat, +lon], 12);
+      mapCtx.marker.setLatLng([+lat, +lon]);
+      $("#map-coords").textContent = `${(+lat).toFixed(5)}, ${(+lon).toFixed(5)}`;
+    } else toast("Location not found", "warn");
+  } catch { toast("Search failed", "error"); }
+}
+function locateMe() {
+  if (!navigator.geolocation) return toast("Geolocation not supported", "warn");
+  navigator.geolocation.getCurrentPosition(
+    p => { mapCtx.map.setView([p.coords.latitude, p.coords.longitude], 13); mapCtx.marker.setLatLng([p.coords.latitude, p.coords.longitude]); $("#map-coords").textContent = `${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)}`; },
+    () => toast("Location permission denied", "warn"), { timeout: 8000 });
+}
+
+/* ---------- 12) Settings ---------- */
+function loadSettings() {
+  state.provider = localStorage.getItem("myai.provider") || "emergent";
+  state.model = localStorage.getItem("myai.model") || "gemini::gemini-3-flash-preview";
+  state.lang = localStorage.getItem("myai.lang") || "auto";
+  state.theme = localStorage.getItem("myai.theme") || "dark";
+  state.apiKey = localStorage.getItem("myai.apikey") || "";
+  $("#setting-provider").value = state.provider;
+  $("#setting-apikey").value = state.apiKey;
+  $("#setting-lang").value = state.lang;
+  $("#model-select").value = state.model;
+  setTheme(state.theme);
+  toggleKeyField();
+}
+function saveSettings() {
+  state.provider = $("#setting-provider").value;
+  state.apiKey = $("#setting-apikey").value;
+  state.lang = $("#setting-lang").value;
+  localStorage.setItem("myai.provider", state.provider);
+  localStorage.setItem("myai.apikey", state.apiKey);
+  localStorage.setItem("myai.lang", state.lang);
+  toast("Settings saved", "success");
+  closeModal("settings-modal");
+}
+function toggleKeyField() {
+  const p = $("#setting-provider").value;
+  $("#key-field").style.display = p === "emergent" ? "none" : "flex";
+}
+function openModal(id) { $("#" + id).classList.add("open"); }
+function closeModal(id) { $("#" + id).classList.remove("open"); }
+
+/* ---------- Status ---------- */
+function setStatus(txt) { $("#status-badge").textContent = txt; }
+async function pingHealth() {
+  try {
+    const r = await fetch(API + "/health"); const j = await r.json();
+    setStatus(j.emergent_key_configured ? "🟢 ONLINE" : "🟡 LIMITED");
+  } catch { setStatus("🔴 OFFLINE"); }
+}
+
+/* ---------- Voice ---------- */
+let recog = null, speaking = null;
+function toggleVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return toast("Voice input not supported in this browser", "warn");
+  if (recog) { recog.stop(); recog = null; return; }
+  recog = new SR();
+  recog.lang = state.lang === "ar" ? "ar-SA" : "en-US";
+  recog.interimResults = true;
+  recog.continuous = false;
+  recog.onresult = e => {
+    const t = [...e.results].map(r => r[0].transcript).join("");
+    $("#chat-input").value = t;
+    autoResize($("#chat-input"));
+  };
+  recog.onend = () => { recog = null; };
+  recog.start();
+  toast("🎤 Listening...", "info");
+}
+function speak(text) {
+  if (!window.speechSynthesis) return toast("Speech not supported", "warn");
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = detectLang(text) === "ar" ? "ar-SA" : "en-US";
+  speechSynthesis.speak(u);
+}
+
+/* ---------- Preview from message ---------- */
+function previewMessage(idx) {
+  const m = state.messages[idx]; if (!m) return;
+  const codeMatch = /```(?:html|svg)?\n([\s\S]*?)```/i.exec(m.content);
+  const html = codeMatch ? codeMatch[1] : `<pre style="font-family:monospace; padding:12px;">${escapeHTML(m.content)}</pre>`;
+  const wrapped = `<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:system-ui;color:#0F172A;padding:16px;}</style></head><body>${html}</body></html>`;
+  $("#preview-frame").srcdoc = wrapped;
+  switchTab("preview");
+}
+
+/* ---------- Tabs ---------- */
+function switchTab(name) {
+  $$(".tab").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  $$(".pane").forEach(p => p.classList.toggle("active", p.id === "pane-" + name));
+  if (name === "map") initMap();
+  if (name === "three") renderThree();
+}
+
+/* ---------- 13) Bootstrap ---------- */
+function bindEvents() {
+  // Sidebar
+  $("#sidebar-toggle").onclick = () => { $("#sidebar").classList.toggle("open"); $("#sidebar-backdrop").classList.toggle("open"); };
+  $("#sidebar-backdrop").onclick = () => { $("#sidebar").classList.remove("open"); $("#sidebar-backdrop").classList.remove("open"); };
+  $("#new-chat-btn").onclick = () => { newSession(); if (window.innerWidth < 1024) $("#sidebar").classList.remove("open"); };
+  $("#session-search").oninput = renderSessions;
+  $("#session-list").onclick = e => {
+    const del = e.target.closest("[data-del]");
+    if (del) { e.stopPropagation(); if (confirm("Delete this chat?")) deleteSession(del.dataset.del); return; }
+    const item = e.target.closest(".session-item");
+    if (item) loadSession(item.dataset.id);
+  };
+  // Theme
+  $("#theme-toggle").onclick = () => setTheme(state.theme === "dark" ? "light" : "dark");
+  // Ribbon
+  $("#ribbon").onclick = e => { const b = e.target.closest("[data-sym]"); if (b) insertAtCursor($("#chat-input"), b.dataset.sym); };
+  // Symbols modal
+  $("#symbols-btn").onclick = () => openModal("symbols-modal");
+  $("#symbol-panel").onclick = e => { const b = e.target.closest("[data-sym]"); if (b) { insertAtCursor($("#chat-input"), b.dataset.sym); closeModal("symbols-modal"); } };
+  // Settings
+  $("#settings-btn").onclick = () => openModal("settings-modal");
+  $("#setting-provider").onchange = toggleKeyField;
+  $("#save-settings-btn").onclick = saveSettings;
+  $("#clear-data-btn").onclick = () => { if (confirm("Clear all local data?")) { localStorage.clear(); location.reload(); } };
+  $$("[data-close-modal]").forEach(b => b.onclick = () => closeModal(b.dataset.closeModal));
+  $$(".modal-backdrop").forEach(m => m.onclick = e => { if (e.target === m) m.classList.remove("open"); });
+  // Model select
+  $("#model-select").onchange = () => { state.model = $("#model-select").value; localStorage.setItem("myai.model", state.model); };
+  // Suggestions
+  document.addEventListener("click", e => {
+    const s = e.target.closest(".suggest");
+    if (s) { $("#chat-input").value = s.dataset.prompt; autoResize($("#chat-input")); $("#chat-input").focus(); }
+  });
+  // Tabs & sidebar tool buttons
+  $("#tabs").onclick = e => { const b = e.target.closest("[data-tab]"); if (b) switchTab(b.dataset.tab); };
+  $$(".tool-btn[data-tab]").forEach(b => b.onclick = () => { switchTab(b.dataset.tab); if (window.innerWidth < 1024) $("#sidebar").classList.remove("open"); });
+  // Composer
+  $("#chat-input").addEventListener("input", e => autoResize(e.target));
+  $("#chat-input").addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+  $("#send-btn").onclick = sendMessage;
+  $("#attach-btn").onclick = () => $("#file-input").click();
+  $("#file-input").onchange = e => handleFiles(e.target.files);
+  $("#attachments").onclick = e => { const b = e.target.closest("[data-detach]"); if (b) { state.attachments.splice(+b.dataset.detach, 1); renderAttachments(); } };
+  $("#mic-btn").onclick = toggleVoice;
+  // Message actions
+  $("#chat-container").onclick = async e => {
+    const t = e.target;
+    if (t.dataset.copy) {
+      const idx = +t.dataset.copy;
+      try { await navigator.clipboard.writeText(state.messages[idx].content); toast("Copied", "success"); }
+      catch { toast("Copy failed", "error"); }
+    } else if (t.dataset.speak) {
+      speak(state.messages[+t.dataset.speak].content);
+    } else if (t.dataset.retry) {
+      const idx = +t.dataset.retry;
+      state.messages = state.messages.slice(0, idx);
+      renderChat(); persistCurrent();
+      // simulate resending last user
+      const lastUser = [...state.messages].reverse().find(m => m.role === "user");
+      if (lastUser) { $("#chat-input").value = lastUser.content; state.messages.pop(); sendMessage(); }
+    } else if (t.dataset.preview) {
+      previewMessage(+t.dataset.preview);
+    } else if (t.dataset.export) {
+      const m = state.messages[+t.dataset.export];
+      const blob = new Blob([m.content], { type: "text/markdown" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "myai-message-" + Date.now() + ".md";
+      a.click();
+    }
+  };
+  // Calculator
+  $("#calc-grid").onclick = e => { const b = e.target.closest("[data-k]"); if (b) calcInput(b.dataset.k); };
+  $$(".calc-mode button").forEach(b => b.onclick = () => calcInput("DEG/RAD"));
+  // Plot
+  $("#plot-btn").onclick = renderPlot;
+  // 3D
+  $("#three-render").onclick = renderThree;
+  // Map
+  $("#map-search-btn").onclick = searchLocation;
+  $("#map-locate-btn").onclick = locateMe;
+  $("#map-search").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); searchLocation(); } });
+  // Preview
+  $("#preview-clear").onclick = () => { $("#preview-frame").srcdoc = ""; };
+  // Offline
+  window.addEventListener("online", () => setStatus("🟢 ONLINE"));
+  window.addEventListener("offline", () => setStatus("🔴 OFFLINE"));
+}
+
+function init() {
+  loadSettings();
+  loadSessions();
+  if (!state.sessions.length) newSession();
+  else loadSession(state.sessions[0].id);
+  buildRibbon();
+  buildSymbolPanel();
+  renderCalcGrid();
+  fillConverter();
+  // Init mermaid
+  if (window.mermaid) mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  bindEvents();
+  pingHealth();
+  setInterval(pingHealth, 45000);
+  applyDir(state.lang === "auto" ? (navigator.language.startsWith("ar") ? "ar" : "en") : state.lang);
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
