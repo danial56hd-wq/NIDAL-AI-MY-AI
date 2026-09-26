@@ -8,7 +8,7 @@
 ![Platform](https://img.shields.io/badge/platform-Web-orange.svg)
 
 ### Your Scientific AI Platform for Math, Science, Engineering & Education
-
+🖥️https://nidalwatfa.codeberg.page/NIDAL-AI-MY-AI/
 [🔗 ORCID Profile](#developer) | [📧 Contact](#contact) | [📄 License](#license)
 
 ---
